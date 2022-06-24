@@ -1,4 +1,4 @@
-(() => { 
+/*(() => { 
     document.getElementById("start").addEventListener("click", () => {
         start() 
     });
@@ -80,4 +80,4 @@
     document.getElementById("z").addEventListener("click", () => {
         checkForLetterInWord('z')
     });
-})();
+})();*/

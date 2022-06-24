@@ -54,12 +54,43 @@
         'zus'
     ]
 
+    const lettersToDisableButtons = [
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z'
+    ]
+
     //----- Variables ----//
 
     var word = []
     var carouselIndex = 0
     var countCorrectLetters = 0
+    var controleLetters = []
     const linePath = '/pictures/line.png'
+    var temp = 0
 
     //----- Functions -----//
 
@@ -70,6 +101,8 @@
         const textLost = `The word that you needed to guess is <strong id="wrongWord">${word.join('')}</strong>.<br>You have done not so well, you died!<br>If you want to restart the game, please click the button that says: Restart the game.`
         document.getElementById('carousel').style.visibility = 'hidden'
         document.getElementById('explanation').style.visibility = 'visible'
+
+        lettersToDisableButtons.forEach(element => document.getElementById(element).disabled = true)
 
         youWon ? document.getElementById('explanation').innerHTML = textWon : document.getElementById('explanation').innerHTML = textLost
     }
@@ -105,6 +138,11 @@
             childLines = document.getElementById('tableRowWordShowCaseLines').lastChild
         }
 
+        controleLetters.forEach(element => document.getElementById(element).style.background = 'none')
+        lettersToDisableButtons.forEach(element => document.getElementById(element).disabled = false)
+
+        controleLetters = []
+
         for (var i = 0; i < word.length; i++) {
             const elementRow = document.createElement('td')
             elementRow.setAttribute('id', 'lineElement'.concat(i.toString()))
@@ -130,23 +168,34 @@
     }
 
     function checkForLetterInWord (letter) {
-        if (word.includes(letter)) {
-            word.forEach((element, index) => {
-                if (letter == element) {
-                    document.getElementById('lineElementLetters'.concat(index.toString())).innerHTML = element
-                    countCorrectLetters++
-                }
-            })
-            console.log(`length: ${word.length} and countCorrectLetters: ${countCorrectLetters}`)
-            if (countCorrectLetters == word.length)
-            showText(true)
+        if (!controleLetters.includes(letter)) {
+            controleLetters.push(letter)
+            
+            temp++
+            if (word.includes(letter)) {
+                document.getElementById(letter).style.background = '#00ff0055'
+                word.forEach((element, index) => {
+                    if (letter == element) {
+                        document.getElementById('lineElementLetters'.concat(index.toString())).innerHTML = element
+                        countCorrectLetters++
+                    }
+                })
+                console.log(`length: ${word.length} and countCorrectLetters: ${countCorrectLetters}`)
+                if (countCorrectLetters == word.length)
+                    showText(true)
+            }
+            else {
+                document.getElementById(letter).style.background = '#ff000055'
+                carousel()
+            }     
         }
-        else
-            carousel()
+
+        console.log(temp)
+        
     }
 
     //----- Buttons -----//
-    /*
+    
     document.getElementById("start").addEventListener("click", () => {
         start() 
     });
@@ -229,5 +278,5 @@
     document.getElementById("z").addEventListener("click", () => {
         checkForLetterInWord('z')
     });
-    */
+    
 })();
